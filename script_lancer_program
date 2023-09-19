@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Voici les commandes que vous devez utilisez pour lancer le projet, c'est plus efficace de les lanncer 1 par un pour voire la creation et apres la verification, n'oublier pas de lancer la socker CA_socket.py dans le repertoir ca
+
+
+socat openssl-listen:9000,fork,cert=/ca/bundle_serveur.pem,cafile=/ca/ecc.ca.cert.pem,verify=0 tcp:127.0.0.1:8080
+
+curl -v -X POST -d 'identite=toto' -d 'intitule_certif=SecuTIC' --cacert /ca/ecc.ca.cert.pem https://localhost:9000/creation --output 'certi.png'
+
+curl -v -F image=@certi.png --cacert /ca/ecc.ca.cert.pem https://localhost:9000/verification
